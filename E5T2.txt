@@ -1,0 +1,16 @@
+1) Identify tools that will allow you to do the following: 
+a. Scan infrastructure as code templates.   
+Answer :- Regula/Terafform Scan
+
+b. Scan AMI’s or containers for OS vulnerabilities.
+Answer :- AWS config/AWS inspector/Cloud Trail
+
+c. Scan an AWS environment for cloud configuration vulnerabilities.
+Answer :- AWS security Hub,AWS GuardDuty
+
+2) For each tool - identify an example compliance violation or vulnerability which it might expose.
+Answer 
+ 
+ 1) Regula :- API key's in code OR IAM policies should not have full administrative privileges OR IAM policies should not be attached directly to users
+ 2) AWS Config/AWS inspector:- SGGroup for port scanning or vulnerabilities scan on EC2
+ 3) AWS GuardDuty/AWS security Hub :- IAM Role,Bucket policy,CloudFormation Unsecured Orgin, LoadBalancer SGGroup

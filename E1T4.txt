@@ -1,0 +1,14 @@
+Following are the 2 issues which can be thought of security threat
+
+1) PolicyName: InstanceRolePolicy-C3
+
+This policy has been assigned to both trusted and untrusted instances this policy has full access through S3 and are not resource based.
+ Statement:
+              - Effect: Allow
+                Action: 's3:*'
+                Resource: '*'
+				
+As we are policy should have least privilege to with specific resource which is missing here . We can have Action :'s3' instead of 's3:*' and Resource can be specific resource ARN instead of all. 
+
+2) WebAppSG: Harden the Security group by specifying the the web service instance Ip address and port 22 instead of 0.0.0.0/0 so that only that instance can communicate on the port 22 and attacker instance cannot communicate web-services instance. 
+             Remove All traffic from the WebAppSG. 
