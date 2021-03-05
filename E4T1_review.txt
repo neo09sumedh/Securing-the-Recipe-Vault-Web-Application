@@ -1,0 +1,49 @@
+Identify 2-3 changes that can be made to our environment to prevent an SSH brute force attack from the internet.
+
+1) Make modification to WebappSG by removing All traffic rule on 0.0.0.0/0.
+2) Allow access on port 5000 only through public subnet of ALB not to 0.0.0.0/0
+3) Also if possible control the SSH to specific subnet range.
+
+Neither instance should have had access to the secret recipes bucket; even in the instance that API credentials were compromised how could we have prevented access to sensitive data?
+Answer:- Current Instance role has resource and action as "*" which allows access to all the bucket under account. Instead of that we control the access to read/List on the files under the specific bucket to specific resource.
+
+Modify IAM role with below Json Policy:
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetBucketPolicyStatus",
+                "s3:GetObject",
+                "s3:ListBucketMultipartUploads",
+                "s3:ListBucketVersions",
+                "s3:ListBucket",
+                "s3:GetBucketPolicy",
+                "s3:ListMultipartUploadParts"
+            ],
+            "Resource": [
+                "arn:aws:s3:us-east-1:571857357844:accesspoint/vpc-006530976452508e4",
+                "arn:aws:s3:*:571857357844:storage-lens/*",
+                "arn:aws:s3:::*/*",
+                "arn:aws:s3:*:571857357844:job/*",
+                "arn:aws:s3:::cand-c3-free-recipes-571857357844"
+            ]
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListStorageLensConfigurations",
+                "s3:GetAccessPoint",
+                "s3:GetAccountPublicAccessBlock",
+                "s3:ListAllMyBuckets",
+                "s3:ListAccessPoints",
+                "s3:ListJobs"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
